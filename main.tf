@@ -1,13 +1,43 @@
-
-provider "aws" {
-  #region = "your-region" # Replace with your AWS region
+terraform {
+  backend "s3" {
+    bucket         = "s306022024"
+    #key            = "terraform.tfstate"
+    region         = "us-east-1"
+  }
 }
 
-resource "aws_instance" "app_server" {
-  ami           = "ami-0e86e20dae9224db8"
-  instance_type = "t2.micro"
+provider "aws" {
+  region = var.aws_region
+}
+
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
+resource "aws_instance" "example" {
+  ami           = data.aws_ami.amazon_linux.id
+  instance_type = var.instance_type
+  key_name      = var.key_name
 
   tags = {
-    Name = "Rahul EC2"
+    Name = var.name
+  }
+
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo yum -y update
+              sudo yum -y install httpd
+              sudo systemctl start httpd
+              sudo systemctl enable httpd
+              EOF
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
