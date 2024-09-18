@@ -26,7 +26,6 @@ jobs :
     - name: Terraform Plan
       run: terraform plan
       
-
     - name: Terraform Apply
       run: terraform apply -auto-approve
       env:
