@@ -1,23 +1,16 @@
-name: CI/CD Pipeline
+name: Test Workflow
 
 on:
   push:
     branches:
-      - main  # Change this to your target branch
+      - main
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-    
+      - name: Run a Test Command
+        run: echo "Hello, World!"
