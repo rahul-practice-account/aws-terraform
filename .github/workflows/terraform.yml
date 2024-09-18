@@ -3,15 +3,12 @@ on:
     branches:
       - main
 
-### Job Definition
 jobs:
   test:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-### Job Steps
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v2
-
-  - name: Run a Test Command
-    run: echo "Hello, World!"
+      - name: Run a Test Command
+        run: echo "Hello, World!"
